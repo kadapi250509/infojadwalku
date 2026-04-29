@@ -10,7 +10,7 @@ include 'config.php';
 
 // Jika user ternyata sudah login, langsung lempar ke beranda
 if (isset($_SESSION['user_id'])) {
-    header("Location: index.html");
+    header("Location: index.php");
     exit();
 }
 
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['email'] = $row['email'];
 
             // Pindah ke halaman utama
-            header("Location: index.html");
+            header("Location: index.php");
             exit();
         } else {
             $error = "Password salah!";

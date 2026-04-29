@@ -1,30 +1,21 @@
 <?php
-// Mengaktifkan laporan error agar mudah mencari kalau ada salah
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+session_start();
+include 'config.php';
 
-// Tentukan folder tujuan (harus sama dengan yang dibuat di server CentOS)
+if (!isset($_SESSION['user_id'])) {
+    die("Silakan login dulu!");
+}
+
+$user_id = $_SESSION['user_id'];
 $target_dir = "uploads/";
+$nama_file = time() . "_" . basename($_FILES["foto_profil"]["name"]);
+$target_file = $target_dir . $nama_file;
 
-// Mengambil file yang dikirim dari form
-if (isset($_FILES["foto_profil"])) {
-    $nama_file = basename($_FILES["foto_profil"]["name"]);
+if (move_uploaded_file($_FILES["foto_profil"]["tmp_name"], $target_file)) {
+    // UPDATE DATABASE: Masukkan nama file foto ke baris user yang sedang login
+    $sql = "UPDATE users SET foto='$nama_file' WHERE id='$user_id'";
+    mysqli_query($conn, $sql);
     
-    // Menambahkan angka acak di depan nama file agar tidak bentrok jika namanya sama
-    $target_file = $target_dir . time() . "_" . $nama_file; 
-
-    // Mencoba memindahkan file ke folder uploads
-    if (move_uploaded_file($_FILES["foto_profil"]["tmp_name"], $target_file)) {
-        echo "<h2>🎉 Hore! Foto berhasil di-upload ke server!</h2>";
-        echo "File tersimpan dengan nama: " . $target_file . "<br><br>";
-        
-        // Catatan: Tombol ini asumsikan nama file profilmu adalah profil.html atau index.html, 
-        // silakan ganti jika namanya berbeda
-        echo "<a href='javascript:history.back()'><button>Kembali ke Profil</button></a>";
-    } else {
-        echo "<h2>Yah, foto gagal di-upload. Pastikan folder uploads sudah memiliki izin.</h2>";
-    }
-} else {
-    echo "Tidak ada file yang dikirim.";
+    header("Location: profile.php");
 }
 ?>

@@ -18,21 +18,22 @@
 
         <div style="text-align: center; padding: 40px 20px;">
             
-            <?php
-            // Logika untuk mencari foto profil terbaru yang di-upload
-            $directory = "uploads/";
-            $latest_image = "";
-            
-            // Mengecek apakah folder uploads ada dan mencari file gambar di dalamnya
-            if (file_exists($directory)) {
-                $images = glob($directory . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
-                if (!empty($images)) {
-                    // Mengurutkan agar foto yang paling baru di-upload berada di urutan pertama
-                    array_multisort(array_map('filemtime', $images), SORT_DESC, $images);
-                    $latest_image = $images[0]; 
-                }
-            }
-            ?>
+          <?php
+session_start();
+include 'config.php';
+$user_id = $_SESSION['user_id'];
+
+// Ambil data foto dari database sesuai ID user yang login
+$res = mysqli_query($conn, "SELECT foto FROM users WHERE id='$user_id'");
+$data = mysqli_fetch_assoc($res);
+$foto_user = $data['foto'];
+?>
+
+<?php if ($foto_user): ?>
+    <img src="uploads/<?php echo $foto_user; ?>" style="width: 128px; height: 128px; border-radius: 50%; object-fit: cover;">
+<?php else: ?>
+    <img src="https://ui-avatars.com/api/?name=User&background=random&size=128" style="border-radius: 50%;">
+<?php endif; ?>
 
             <?php if (!empty($latest_image)): ?>
                 <img id="fotoProfil" src="<?php echo $latest_image; ?>" style="width: 128px; height: 128px; border-radius: 50%; border: 4px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); object-fit: cover;">

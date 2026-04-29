@@ -1,44 +1,46 @@
 <?php
-// 1. Memulai session (Wajib di baris paling atas)
+// 1. WAJIB: Memulai sesi di baris paling atas
 session_start();
 
-// 2. Menyambungkan ke database
+// 2. WAJIB: Menyambungkan ke database
+// Pastikan kamu punya file config.php yang isinya benar
 include 'config.php';
 
-// Cek jika user sudah login, langsung lempar ke beranda
+// Jika user ternyata sudah login, langsung lempar ke beranda
 if (isset($_SESSION['user_id'])) {
-    header("Location: index.html"); // Sesuaikan jika berandamu .php
+    header("Location: index.html");
     exit();
 }
 
-$error_message = "";
+$error = "";
 
-// 3. Proses saat tombol login ditekan
+// 3. Proses saat tombol "Masuk Sekarang" ditekan
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = $_POST['password'];
 
-    // Mencari user di database
+    // Mencari user berdasarkan email
     $query = "SELECT * FROM users WHERE email = '$email'";
     $result = mysqli_query($conn, $query);
 
     if (mysqli_num_rows($result) > 0) {
-        $user = mysqli_fetch_assoc($result);
+        $row = mysqli_fetch_assoc($result);
         
-        // Verifikasi password (disini kita pakai cek teks biasa dulu sesuai insert sebelumnya)
-        if ($password == $user['password']) {
-            // LOGIN BERHASIL
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['nama']    = $user['nama'];
-            $_SESSION['email']   = $user['email'];
+        // Cek apakah password cocok
+        if ($password == $row['password']) {
+            // BERHASIL LOGIN! Simpan data ke Sesi (Session)
+            $_SESSION['user_id'] = $row['id'];
+            $_SESSION['nama'] = $row['nama'];
+            $_SESSION['email'] = $row['email'];
 
-            header("Location: index.html"); // Pindah ke beranda
+            // Pindah ke halaman utama
+            header("Location: index.html");
             exit();
         } else {
-            $error_message = "Password salah!";
+            $error = "Password salah!";
         }
     } else {
-        $error_message = "Email tidak terdaftar!";
+        $error = "Email tidak terdaftar!";
     }
 }
 ?>
@@ -54,6 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <div class="mobile-app login-screen">
         <div class="login-content">
             <div class="logo-container">
@@ -63,31 +66,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h1 class="app-title">InfoJadwalKu</h1>
             <p class="app-subtitle">Kelola Jadwalmu Lebih Cerdas & Mudah</p>
 
-            <?php if ($error_message): ?>
-                <div style="color: #E53E3E; background: #FED7D7; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; text-align: center;">
-                    <i class="fa-solid fa-circle-exclamation"></i> <?php echo $error_message; ?>
-                </div>
-            <?php endif; ?>
+            <div class="login-form">
+                <form action="login.php" method="POST">
+                    
+                    <?php if($error != ""): ?>
+                        <div style="color: white; background: #E53E3E; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; text-align: center;">
+                            <i class="fa-solid fa-triangle-exclamation"></i> <?php echo $error; ?>
+                        </div>
+                    <?php endif; ?>
 
-            <form class="login-form" method="POST" action="login.php">
-                <div class="input-group">
-                    <i class="fa-regular fa-envelope"></i>
-                    <input type="email" name="email" placeholder="Masukkan Email Siswa" required>
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" name="password" placeholder="Kata Sandi" required>
-                </div>
-                
-                <button type="submit" class="btn-login">Masuk Sekarang</button>
-                
-                <div class="divider"><span>ATAU</span></div>
-                
-                <button type="button" class="btn-google">
-                    <i class="fa-brands fa-google"></i> Masuk dengan Google
-                </button>
-            </form>
+                    <div class="input-group">
+                        <i class="fa-regular fa-envelope"></i>
+                        <input type="email" name="email" placeholder="Masukkan Email Siswa" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" name="password" placeholder="Kata Sandi" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-login">Masuk Sekarang</button>
+                    
+                    <div class="divider"><span>ATAU</span></div>
+                    
+                    <button type="button" class="btn-google">
+                        <i class="fa-brands fa-google"></i> Masuk dengan Google
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
+
 </body>
 </html>

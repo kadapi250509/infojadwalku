@@ -6,23 +6,15 @@ session_start();
 
 // 2. WAJIB: Menyambungkan ke database
 // Pastikan kamu punya file config.php yang isinya benar
-include 'config.php';
-
-// Jika user ternyata sudah login, langsung lempar ke beranda
-if (isset($_SESSION['user_id'])) {
-    header("Location: index.php");
-    exit();
-}
-
-$error = "";
+include "config.php";
 
 // 3. Proses saat tombol "Masuk Sekarang" ditekan
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $email = $_POST['email'];
     $password = $_POST['password'];
 
     // Mencari user berdasarkan email
-    $query = "SELECT * FROM users WHERE email = '$email'";
+    $query = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
     $result = mysqli_query($conn, $query);
 
     if (mysqli_num_rows($result) > 0) {
@@ -39,10 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: index.php");
             exit();
         } else {
-            $error = "Password salah!";
-        }
-    } else {
-        $error = "Email tidak terdaftar!";
+echo "<script>alert('Login Gagal!'); window.location='login.php';</script>";
     }
 }
 ?>

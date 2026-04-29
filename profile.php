@@ -1,69 +1,50 @@
+<?php
+session_start();
+include 'config.php';
+
+// Jika tidak ada session (belum login), tendang ke halaman login
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Ambil data user dari database
+$query = mysqli_query($conn, "SELECT * FROM users WHERE id = '$user_id'");
+$user = mysqli_fetch_assoc($query);
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Saya</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="mobile-app">
-        <header class="chat-header">
-            <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
-            <h2>Profil</h2>
-            <i class="fa-solid fa-gear"></i>
-        </header>
-
         <div style="text-align: center; padding: 40px 20px;">
             
-          <?php
-session_start();
-include 'config.php';
-$user_id = $_SESSION['user_id'];
+            <?php 
+            $foto_nama = $user['foto']; 
+            $path_foto = "uploads/" . $foto_nama;
 
-// Ambil data foto dari database sesuai ID user yang login
-$res = mysqli_query($conn, "SELECT foto FROM users WHERE id='$user_id'");
-$data = mysqli_fetch_assoc($res);
-$foto_user = $data['foto'];
-?>
-
-<?php if ($foto_user): ?>
-    <img src="uploads/<?php echo $foto_user; ?>" style="width: 128px; height: 128px; border-radius: 50%; object-fit: cover;">
-<?php else: ?>
-    <img src="https://ui-avatars.com/api/?name=User&background=random&size=128" style="border-radius: 50%;">
-<?php endif; ?>
-
-            <?php if (!empty($latest_image)): ?>
-                <img id="fotoProfil" src="<?php echo $latest_image; ?>" style="width: 128px; height: 128px; border-radius: 50%; border: 4px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); object-fit: cover;">
+            if (!empty($foto_nama) && file_exists($path_foto)): ?>
+                <img src="<?php echo $path_foto; ?>" style="width: 128px; height: 128px; border-radius: 50%; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
             <?php else: ?>
-                <img id="fotoProfil" src="https://ui-avatars.com/api/?name=User&background=random&size=128" style="border-radius: 50%; border: 4px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($user['nama']); ?>&background=random&size=128" style="border-radius: 50%; border: 4px solid white;">
             <?php endif; ?>
-            
-            <form action="upload_foto.php" method="POST" enctype="multipart/form-data" style="margin-top: 15px;">
-                <input type="file" name="foto_profil" accept="image/*" required style="margin-bottom: 10px; font-size: 12px;">
-                <br>
-                <button type="submit" style="background-color: #4CAF50; color: white; padding: 5px 15px; border: none; border-radius: 5px; cursor: pointer;">
-                    Upload Foto
-                </button>
+
+            <h2 style="margin-top: 15px;"><?php echo $user['nama']; ?></h2>
+            <p style="color: #718096;"><?php echo $user['email']; ?></p>
+
+            <form action="upload_foto.php" method="POST" enctype="multipart/form-data" style="margin-top: 20px;">
+                <input type="file" name="foto_profil" accept="image/*" required>
+                <button type="submit" style="background: #4CAF50; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px;">Ganti Foto</button>
             </form>
 
-            <h2 id="namaProfil" style="margin-top: 25px;">Nama Siswa</h2>
-            <p style="color: #718096;">Siswa - XI TKJ 1</p>
-            
-            <div style="margin-top: 30px; text-align: left; background: white; border-radius: 15px; padding: 20px;">
-                <div style="margin-bottom: 15px;">
-                    <label style="font-size: 0.7rem; color: #A0AEC0; font-weight: bold;">NISN</label>
-                    <p style="font-weight: 500;">0012345678</p>
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="font-size: 0.7rem; color: #A0AEC0; font-weight: bold;">EMAIL</label>
-                    <p id="emailProfil" style="font-weight: 500;">email@sekolah.sch.id</p>
-                </div>
-            </div>
-
-            <button style="width: 100%; margin-top: 20px; background: #E53E3E; color: white; border: none; padding: 15px; border-radius: 12px; font-weight: 600;">Keluar Aplikasi</button>
+            <a href="logout.php" style="display: block; margin-top: 20px; color: #E53E3E; text-decoration: none; font-weight: bold;">Keluar Aplikasi</a>
         </div>
     </div>
 </body>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfoJadwalKu - Admin AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="mobile-app chat-screen">
+        
+        <header class="chat-header">
+            <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+            <div class="chat-title">
+                <h2>Admin AI</h2>
+                <span>InfoJadwalKu</span>
+            </div>
+            <i class="fa-solid fa-robot robot-icon"></i>
+        </header>
+
+        <div class="chat-body">
+            
+            <div class="chat-bubble user-bubble">
+                Ubah jadwal Matematika besok jadi jam 10
+            </div>
+
+            <div class="chat-bubble ai-bubble">
+                Baik, jadwal Matematika untuk Rabu, 16 Oktober dipindah ke jam 10:00. Apakah sudah benar?
+            </div>
+
+            <div class="draft-card">
+                <div class="draft-header">Pratinjau Jadwal Baru</div>
+                <div class="agenda-card draft-agenda">
+                    <div class="card-indicator green"></div>
+                    <div class="card-content">
+                        <h4 class="subject-name">Matematika</h4>
+                        <p class="time"><i class="fa-regular fa-clock"></i> 10:00 - 11:30</p>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn-confirm">Ya, Simpan</button>
+                    <button class="btn-cancel">Batal</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" placeholder="Ketik perintah jadwal di sini..." class="chat-input">
+            <button class="mic-btn"><i class="fa-solid fa-microphone"></i></button>
+        </div>
+
+    </div>
+<script src="chat-script.js"></script>
+</body>
+</html>

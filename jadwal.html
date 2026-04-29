@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfoJadwalKu - Jadwal Mingguan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="mobile-app">
+        
+        <header class="header" style="padding-bottom: 10px;">
+            <div class="user-info">
+                <img src="https://ui-avatars.com/api/?name=Andi&background=random" alt="Profil" class="avatar">
+                <div>
+                    <h1 class="greeting">Jadwal Mingguan</h1>
+                    <div class="class-dropdown">Kelas XI TKJ 1</div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px; overflow-x: auto; padding-bottom: 10px;">
+                <span style="background: var(--primary-blue); color: white; padding: 5px 15px; border-radius: 15px; font-size: 0.8rem; font-weight: 600;">Senin</span>
+                <span style="color: var(--text-gray); padding: 5px 15px; font-size: 0.8rem; font-weight: 500;">Selasa</span>
+                <span style="color: var(--text-gray); padding: 5px 15px; font-size: 0.8rem; font-weight: 500;">Rabu</span>
+                <span style="color: var(--text-gray); padding: 5px 15px; font-size: 0.8rem; font-weight: 500;">Kamis</span>
+                <span style="color: var(--text-gray); padding: 5px 15px; font-size: 0.8rem; font-weight: 500;">Jumat</span>
+            </div>
+        </header>
+
+        <section class="agenda-section" style="padding-top: 20px; height: 600px; overflow-y: auto;">
+            
+            <div class="agenda-card">
+                <div class="card-indicator green"></div>
+                <div class="card-content">
+                    <h4 class="subject-name">Bahasa Indonesia</h4>
+                    <p class="time">07:00 - 08:30</p>
+                    <div class="details"><span><i class="fa-solid fa-user"></i> Pak Budi</span></div>
+                </div>
+            </div>
+
+            <div class="agenda-card">
+                <div class="card-indicator green"></div>
+                <div class="card-content">
+                    <h4 class="subject-name">Matematika</h4>
+                    <p class="time">08:30 - 10:00</p>
+                    <div class="details"><span><i class="fa-solid fa-user"></i> Bu Maya</span></div>
+                </div>
+            </div>
+
+            <div class="agenda-card">
+                <div class="card-indicator orange"></div>
+                <div class="card-content">
+                    <h4 class="subject-name">Rapat OSIS</h4>
+                    <p class="time">10:15 - 11:30</p>
+                    <div class="details"><span><i class="fa-solid fa-users"></i> Ruang Rapat</span></div>
+                </div>
+            </div>
+
+        </section>
+
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Beranda</span></a>
+            <a href="jadwal.html" class="nav-item active"><i class="fa-solid fa-list"></i><span>Jadwal</span></a>
+            <a href="chat-ai.html" class="nav-item ai-btn"><i class="fa-solid fa-robot"></i><span>Admin AI</span></a>
+            <a href="profile.html" class="nav-item"><i class="fa-regular fa-user"></i><span>Profil</span></a>
+        </nav>
+
+    </div>
+
+</body>
+</html>

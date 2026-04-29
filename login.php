@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['email'] = $row['email'];
 
             // Pindah ke halaman utama
-            header("Location: index.php");
+            header("Location: index.html");
             exit();
         } else {
 echo "<script>alert('Login Gagal!'); window.location='login.php';</script>";
